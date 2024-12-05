@@ -5,7 +5,7 @@ import { useSearchParams } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 
 const HotelContext = createContext();
-const BASE_URL = "http://localhost:5000/hotels";
+const BASE_URL = "http://localhost:5000";
 
 function HotelsProvider({ children }) {
   const [currentHotel, setCurrentHotel] = useState(null);
@@ -14,7 +14,7 @@ function HotelsProvider({ children }) {
   const destination = searchParams.get("destination");
   const room = JSON.parse(searchParams.get("options"))?.room;
   const { isLoading, data: hotels } = useFetch(
-    BASE_URL,
+    `${BASE_URL}/hotels`,
     `host_location_like=${destination || ""}&accommodates_gte=${room || 1}`
   );
 
