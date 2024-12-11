@@ -9,7 +9,6 @@ function Bookmark() {
   if (isLoading) return <Loader />;
   return (
     <div>
-      bookmark list
       <h2>Bookmark List</h2>
       <div className="bookmarkList">
         {bookmarks.map((item) => {

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../Loader/Loader";
 import ReactCountryFlag from "react-country-flag";
+import { useBookmark } from "../context/BookmarkListContext";
 
 const BASE_GEOCODING_URL = "https://api-bdc.net/data/reverse-geocode-client";
 
@@ -15,6 +16,7 @@ function AddNewBookmark() {
   const [countryCode, setcountryCode] = useState("");
   const [isLoadingGeoCoding, setisLoadingGeoCoding] = useState(false);
   const [geoCodingError, setGeoCodingError] = useState(null);
+  const { createBookmark } = useBookmark();
 
   useEffect(() => {
     async function fetchLocationData() {
@@ -42,13 +44,29 @@ function AddNewBookmark() {
     fetchLocationData();
   }, [lat, lng]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!cityName || !country) return;
+
+    const newBookmark = {
+      cityName,
+      country,
+      countryCode,
+      latitude: lat,
+      longitude: lng,
+      host_location: cityName + " " + country,
+    };
+    await createBookmark(newBookmark);
+    navigate("/bookmarks");
+  };
+
   if (isLoadingGeoCoding) return <Loader />;
   if (geoCodingError) return <p>{geoCodingError}</p>;
 
   return (
     <div>
       <h2>Bookmark new Location</h2>
-      <form className="form">
+      <form className="form" onSubmit={handleSubmit}>
         <div className="formControl">
           <label htmlFor="cityName">CityName</label>
           <input
@@ -68,7 +86,7 @@ function AddNewBookmark() {
             name="country"
             id="country"
           />
-          <ReactCountryFlag className="flag" svg countryCode={countryCode}/>
+          <ReactCountryFlag className="flag" svg countryCode={countryCode} />
         </div>
         <div className="buttons">
           <button

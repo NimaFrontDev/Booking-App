@@ -1,26 +1,51 @@
 import axios from "axios";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import useFetch from "../../hooks/useFetch";
 
 const BookmarkContext = createContext();
 const BASE_URL = "http://localhost:5000";
 
 function BookmarkListProvider({ children }) {
   const [currentBookmark, setcurrentBookmark] = useState(null);
-  const [isLoadingCurrBookmark, setIsLoadingCurrBookmark] = useState(false);
-  const { isLoading, data: bookmarks } = useFetch(`${BASE_URL}/bookmarks`);
+  const [bookmarks, setBookmarks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
+  useEffect(() => {
+    async function fetchBookmarkList() {
+      setIsLoading(true);
+      try {
+        const { data } = await axios.get(`${BASE_URL}/bookmarks`);
+        setBookmarks(data);
+      } catch (error) {
+        toast.error(error?.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchBookmarkList();
+  }, []);
   async function getBookmark(id) {
-    setIsLoadingCurrBookmark(true);
+    setIsLoading(true);
     setcurrentBookmark(null);
     try {
       const { data } = await axios.get(`${BASE_URL}/bookmarks/${id}`);
       setcurrentBookmark(data);
-      setIsLoadingCurrBookmark(false);
     } catch (error) {
       toast.error(error?.message);
-      setIsLoadingCurrBookmark(false);
+    } finally {
+      setIsLoading(false);
+    }
+  }
+  async function createBookmark(newBookmark) {
+    setIsLoading(true);
+    try {
+      const { data } = await axios.post(`${BASE_URL}/bookmarks/`, newBookmark);
+      setcurrentBookmark(data);
+      setBookmarks((prev) => [...prev, data]);
+    } catch (error) {
+      toast.error(error?.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -31,7 +56,7 @@ function BookmarkListProvider({ children }) {
         bookmarks,
         currentBookmark,
         getBookmark,
-        isLoadingCurrBookmark,
+        createBookmark,
       }}
     >
       {children}
