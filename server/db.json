@@ -1370,15 +1370,6 @@
       "id": 8
     },
     {
-      "cityName": "Clairfontaine",
-      "country": "France",
-      "countryCode": "FR",
-      "latitude": "49.997354208514025",
-      "longitude": "3.9949987660040884",
-      "host_location": "Clairfontaine France",
-      "id": 9
-    },
-    {
       "cityName": "Gent",
       "country": "Belgium",
       "countryCode": "BE",
@@ -1388,22 +1379,13 @@
       "id": 10
     },
     {
-      "cityName": "Gent",
-      "country": "Belgium",
-      "countryCode": "BE",
-      "latitude": "51.0947601114747",
-      "longitude": "3.7394988550680095",
-      "host_location": "Gent Belgium",
-      "id": 11
-    },
-    {
-      "cityName": "Kortrijk",
-      "country": "Belgium",
-      "countryCode": "BE",
-      "latitude": "50.83906249433092",
-      "longitude": "3.2446510711917096",
-      "host_location": "Kortrijk Belgium",
-      "id": 12
+      "cityName": "Fourmies",
+      "country": "France",
+      "countryCode": "FR",
+      "latitude": "50.00960004373521",
+      "longitude": "4.053096771240235",
+      "host_location": "Fourmies France",
+      "id": 13
     }
   ]
 }
